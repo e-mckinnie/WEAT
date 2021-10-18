@@ -52,10 +52,7 @@ class WEAT(WordEmbeddingTest):
             y_s = np.array([self.s(y) for y in Y])
             sample_s = np.sum(x_s) - np.sum(y_s)
 
-            import pdb
-            pdb.set_trace()
-
             if sample_s > observed_s:
-                count = count + 1
+                count += 1
 
         return count / n

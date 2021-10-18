@@ -47,7 +47,7 @@ class WEFAT(WordEmbeddingTest):
 
         count = 0
         n = len(test_y)
-        print(n)
+
         for i in range(n):
             pred_y = model.predict(test_x[i].reshape((-1, 1)))
 

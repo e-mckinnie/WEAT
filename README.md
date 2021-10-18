@@ -1,9 +1,9 @@
 # WEAT
-Implementation of WEAT as described by Caliskan, Bryson, and Narayanan in "Semantics derived automatically from language corpora contain human-like biases."
+Implementation of WEAT (and WEFAT) as described by Caliskan, Bryson, and Narayanan in "Semantics derived automatically from language corpora contain human-like biases" (Science, 2017, DOI: 10.1126/science.aal4230).
 
 To use:
 
-First, visit https://nlp.stanford.edu/projects/glove/ to download the pre-trained word embeddings. The embeddings in weat_1.json and wefat_1.json use Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB). Download the file, unzip, and place the resulting txt file in the same directory. The file was ommitted due to Github space constraints.
+First, visit https://nlp.stanford.edu/projects/glove/ to download the pre-trained word embeddings. The embeddings in weat_1.json and wefat_1.json use Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB). Download the file, unzip, and place the resulting txt file in the same directory. The file was ommitted in this repository due to Github space constraints.
 
 Then run with:
 
