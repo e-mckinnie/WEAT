@@ -88,7 +88,7 @@ def test_weat(embedded_data):
     print(f'\teffect size: {d}')
 
     p_value = test.p_value()
-    print(f'p_value: {p_value}')
+    print(f'\tp_value: {p_value}')
 
 
 # Run WEFAT technique and show plot, Pearson correlation coefficient, and p-value
@@ -111,7 +111,7 @@ def test_wefat(embedded_data, wefat_association_file_name):
     print(f'\tPearson\'s correlation coefficient: {correlation_coefficient}')
 
     p_value = test.p_value(pairs)
-    print(f'p_value: {p_value}')
+    print(f'\tp_value: {p_value}')
 
 
 if __name__ == '__main__':
