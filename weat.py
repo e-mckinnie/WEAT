@@ -43,7 +43,7 @@ class WEAT(WordEmbeddingTest):
         n = 10000
         count = 0
 
-        for i in range(0, n):
+        for i in range(n):
             np.random.shuffle(XY)
             X = XY[0:set_size]
             Y = XY[set_size:]

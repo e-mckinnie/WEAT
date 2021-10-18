@@ -17,30 +17,19 @@ def main(args):
     embedded_data = load_embedded_data(args.embedded_data_file_name)
 
     if args.test == 'WEAT':
-        test = WEAT(list(embedded_data['target_1'].values()), list(embedded_data['target_2'].values()), list(embedded_data['attribute_1'].values()), list(embedded_data['attribute_2'].values()))
-        d = test.effect_size()
-        print(f'\teffect size: {d}')
+        test_weat(embedded_data)
     elif args.test == 'WEFAT':
-        test = WEFAT(embedded_data['target'], list(embedded_data['attribute_1'].values()), list(embedded_data['attribute_2'].values()))
-        s = test.all_s()
-        with open(args.wefat_association_file_name, 'r') as file:
-            association_data = json.load(file)
-
-        pairs = []
-        for association in association_data:
-            if association in s.keys():
-                pairs.append((association_data[association], s[association]))
-
-        plt.scatter(*zip(*pairs))
-        plt.show()
-
-        correlation_coefficient = np.corrcoef(*zip(*pairs))[0][1]
-        print(f'\tPearson\'s correlation coefficient: {correlation_coefficient}')
+        test_wefat(embedded_data, args.wefat_association_file_name)
     else:
         print('Test type not recognized.')
 
-    p_value = test.p_value()
-    print(f'p_value: {p_value}')
+
+# Load data file with target and attribute words
+def load_targets_and_attributes(file_name):
+    with open(file_name, 'r') as file:
+        data = json.load(file)
+
+    return data
 
 
 # Load and prepare word embeddings
@@ -55,14 +44,6 @@ def get_embeddings(glove_file_name):
         except Exception:
             pass
     return embeddings
-
-
-# Load data file with target and attribute words
-def load_targets_and_attributes(file_name):
-    with open(file_name, 'r') as file:
-        data = json.load(file)
-
-    return data
 
 
 # Create file of the embeddings of target and attribute words
@@ -97,6 +78,40 @@ def load_embedded_data(embedded_data_file_name):
         embeddings[label] = {embedding.split()[0]: np.asarray(embedding.split()[1:], dtype='float32') for embedding in data[label]}
 
     return embeddings
+
+
+# Run WEAT technique and report effect size and p-value
+def test_weat(embedded_data):
+    test = WEAT(list(embedded_data['target_1'].values()), list(embedded_data['target_2'].values()), list(embedded_data['attribute_1'].values()), list(embedded_data['attribute_2'].values()))
+
+    d = test.effect_size()
+    print(f'\teffect size: {d}')
+
+    p_value = test.p_value()
+    print(f'p_value: {p_value}')
+
+
+# Run WEFAT technique and show plot, Pearson correlation coefficient, and p-value
+def test_wefat(embedded_data, wefat_association_file_name):
+    test = WEFAT(embedded_data['target'], list(embedded_data['attribute_1'].values()), list(embedded_data['attribute_2'].values()))
+    s = test.all_s()
+
+    with open(args.wefat_association_file_name, 'r') as file:
+        association_data = json.load(file)
+
+    pairs = []
+    for association in association_data:
+        if association in s.keys():
+            pairs.append((association_data[association], s[association]))
+
+    plt.scatter(*zip(*pairs))
+    plt.show()
+
+    correlation_coefficient = np.corrcoef(*zip(*pairs))[0][1]
+    print(f'\tPearson\'s correlation coefficient: {correlation_coefficient}')
+
+    p_value = test.p_value(pairs)
+    print(f'p_value: {p_value}')
 
 
 if __name__ == '__main__':
