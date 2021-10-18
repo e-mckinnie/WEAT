@@ -8,6 +8,7 @@ First, visit https://nlp.stanford.edu/projects/glove/ to download the pre-traine
 Then run with:
 
 python main.py --data_file_name DATA_FILE_NAME --embedded_data_file_name EMBEDDED_DATA_FILE_NAME --glove_file_name GLOVE_FILE_NAME --wefat_association_file_name WEFAT_ASSOCIATION_FILE_NAME --test TEST
+
 where:
     DATA_FILE_NAME: name of target/attribute data file. In this example, weat_1.json or wefat_1.json
     EMBEDDED_DATA_FILE_NAME: name of target/attribute embeddings file; if it does not exist it will be created. In this example, weat_1_embedded.json or wefat_1_embedded.json
