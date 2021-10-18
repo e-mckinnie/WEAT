@@ -101,7 +101,7 @@ def load_embedded_data(embedded_data_file_name):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Execute WEAT or WEFAT.')
-    parser.add_argument('--data_file_name', dest='data_file_name', help='file name for target and attribute words. See flowers_insects-pleasant_unpleasant.json for format')
+    parser.add_argument('--data_file_name', dest='data_file_name', help='file name for target and attribute words. See weat_1.json or wefat_1.json for format')
     parser.add_argument('--embedded_data_file_name', dest='embedded_data_file_name', help='file name for existing or to be created file with embeddings for target and attribute words')
     parser.add_argument('--glove_file_name', dest='glove_file_name', help='file name for GloVE , must be provided if embedded_file_name file does not exist')
     parser.add_argument('--wefat_association_file_name', dest='wefat_association_file_name', help='mapping of target to other statistic, such as occupation to % women. See wefat_1_percentage_women.json for format')
