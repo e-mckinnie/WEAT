@@ -39,8 +39,8 @@ def main(args):
     else:
         print('Test type not recognized.')
 
-    # p_value = test.p_value()
-    # print(f'p_value: {p_value}')
+    p_value = test.p_value()
+    print(f'p_value: {p_value}')
 
 
 # Load and prepare word embeddings
