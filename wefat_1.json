@@ -1,0 +1,9 @@
+{
+    "target": ["technician", "accountant", "supervisor", "engineer", "worker", "educator", "clerk", "counselor", "inspector", "mechanic", "manager", 
+                "therapist", "administrator", "salesperson", "receptionist", "librarian", "advisor", "pharmacist", "janitor", "psychologist", "physician", 
+                "carpenter", "nurse", "investigator", "bartender", "specialist", "electrician", "officer", "pathologist", "teacher", "lawyer", "planner", 
+                "practitioner", "plumber", "instructor", "surgeon", "veterinarian", "paramedic", "examiner", "chemist", "machinist", "appraiser", "nutritionist", 
+                "architect", "hairdresser", "baker", "programmer", "paralegal", "hygienist", "scientist"],
+    "attribute_1": ["female", "woman", "girl", "sister", "she", "her", "hers", "daughter"],
+    "attribute_2": ["male", "man", "boy", "brother", "he", "him", "his", "son"]
+}
