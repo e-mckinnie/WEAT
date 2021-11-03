@@ -5,6 +5,8 @@ To use:
 
 First, visit https://nlp.stanford.edu/projects/glove/ to download the pre-trained word embeddings. The embeddings in weat_1.json and wefat_1.json use Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB). Download the file, unzip, and place the resulting txt file in the same directory. The file was ommitted in this repository due to Github space constraints.
 
+Next install requirements.txt with pip install.
+
 Then run with:
 
 python main.py --data_file_name DATA_FILE_NAME --embedded_data_file_name EMBEDDED_DATA_FILE_NAME --glove_file_name GLOVE_FILE_NAME --wefat_association_file_name WEFAT_ASSOCIATION_FILE_NAME --test TEST --iterations N --distribution_type DISTRIBUTION_TYPE
