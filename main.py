@@ -18,10 +18,10 @@ def main(args):
 
     if args.test == 'WEAT':
         print(f'Running WEAT on {args.data_file_name}')
-        test_weat(embedded_data)
+        test_weat(embedded_data, args.iterations, args.distribution_type)
     elif args.test == 'WEFAT':
         print(f'Running WEFAT on {args.data_file_name}')
-        test_wefat(embedded_data, args.wefat_association_file_name)
+        test_wefat(embedded_data, args.wefat_association_file_name, args.iterations, args.distribution_type)
     else:
         print('Test type not recognized.')
 
@@ -78,18 +78,18 @@ def load_embedded_data(embedded_data_file_name):
 
 
 # Run WEAT technique and report effect size and p-value
-def test_weat(embedded_data):
+def test_weat(embedded_data, iterations, distribution_type):
     test = WEAT(list(embedded_data['target_1'].values()), list(embedded_data['target_2'].values()), list(embedded_data['attribute_1'].values()), list(embedded_data['attribute_2'].values()))
 
     d = test.effect_size()
     print(f'\teffect size: {d}')
 
-    p_value = test.p_value()
+    p_value = test.p_value(iterations, distribution_type)
     print(f'\tp_value: {p_value}')
 
 
-# Run WEFAT technique and show plot, Pearson correlation coefficient, and p-value
-def test_wefat(embedded_data, wefat_association_file_name):
+# Run WEFAT technique and show either plot and Pearson correlation coefficient or effect sizes and p-values
+def test_wefat(embedded_data, wefat_association_file_name, iterations, distribution_type):
     test = WEFAT(embedded_data['target'], list(embedded_data['attribute_1'].values()), list(embedded_data['attribute_2'].values()))
     s = test.all_effect_sizes()
 
@@ -108,9 +108,11 @@ def test_wefat(embedded_data, wefat_association_file_name):
             correlation_coefficient = np.corrcoef(*zip(*pairs))[0][1]
             print(f'\tPearson\'s correlation coefficient: {correlation_coefficient}')
     else:
+        p_values = test.all_p_values(iterations, distribution_type)
         for target_word in s.keys():
             print(f'\t{target_word}')
             print(f'\t\teffect_size: {s[target_word]}')
+            print(f'\t\tp_value: {p_values[target_word]}')
 
 
 if __name__ == '__main__':
@@ -120,6 +122,8 @@ if __name__ == '__main__':
     parser.add_argument('--glove_file_name', dest='glove_file_name', help='file name for GloVE , must be provided if embedded_file_name file does not exist')
     parser.add_argument('--wefat_association_file_name', dest='wefat_association_file_name', help='mapping of target to other statistic, such as occupation to % women. See wefat_1_percentage_women.json for format')
     parser.add_argument('--test', dest='test', help='WEAT or WEFAT')
+    parser.add_argument('--iterations', dest='iterations', type=int, help='number of iterations to compute p-value')
+    parser.add_argument('--distribution_type', dest='distribution_type', choices=['normal', 'empirical'], help='type of distribution to compute p-value')
 
     args = parser.parse_args()
     main(args)

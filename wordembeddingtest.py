@@ -5,7 +5,10 @@ class WordEmbeddingTest:
     def __init__(self):
         pass
 
-    def p_test(self):
+    def effect_size(self):
+        pass
+
+    def p_value(self):
         pass
 
     def tostr(self):

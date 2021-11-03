@@ -1,5 +1,6 @@
 import numpy as np
-from sklearn.linear_model import LinearRegression
+from scipy.stats import norm
+from statsmodels.distributions.empirical_distribution import ECDF
 
 from wordembeddingtest import WordEmbeddingTest
 
@@ -10,13 +11,13 @@ class WEFAT(WordEmbeddingTest):
         self.A = A
         self.B = B
 
-    # Return all calculated s
+    # Return all calculated effect sizes
     def all_effect_sizes(self):
-        statistics = {}
+        effect_sizes = {}
         for w in self.W:
-            statistic = self.effect_size(self.W[w])
-            statistics[w] = statistic
-        return statistics
+            effect_size = self.effect_size(self.W[w])
+            effect_sizes[w] = effect_size
+        return effect_sizes
 
     # Calculate s(w, A, B)
     def effect_size(self, w):
@@ -25,33 +26,55 @@ class WEFAT(WordEmbeddingTest):
 
         return (np.mean(a_cos) - np.mean(b_cos)) / np.std(np.concatenate((a_cos, b_cos)))
 
-    # Get name of test
-    def tostr(self):
-        return "WEFAT"
+    # Return all calculated p_values
+    def all_p_values(self, iterations, distribution_type):
+        p_values = {}
+        for w in self.W:
+            p_value = self.p_value(self.W[w], iterations, distribution_type)
+            p_values[w] = p_value
+        return p_values
 
     # Get p-value
-    # Uses linear regression to predict p_w from s(w, A, B)
-    def p_value(self, pairs):
-        np.random.shuffle(pairs)
-        new_x = np.array([y for (x, y) in pairs])
-        new_y = np.array([x for (x, y) in pairs])
+    # {(A_i, B_i)}_i is all partitions of A union B into two sets of equal size
+    # p-value = Pr_i[s(w, A_i, B_i) > s(w, A, B)]
+    def p_value(self, w, iterations, distribution_type):
+        test_statistic = self._get_test_statistic(w)
+        null_distribution = self._null_distribution(w, iterations)
 
-        break_point = int(len(new_y) * 0.9)
+        if distribution_type == 'normal':
+            mu, std = norm.fit(null_distribution)
+            cdf = norm.cdf(test_statistic, mu, std)
+            return 1 - cdf
 
-        train_x = new_x[0:break_point].reshape((-1, 1))
-        test_x = new_x[break_point:].reshape((-1, 1))
-        train_y = new_y[0:break_point]
-        test_y = new_y[break_point:]
+        elif distribution_type == 'empirical':
+            ecdf = ECDF(null_distribution)
+            return 1 - ecdf(test_statistic)
 
-        model = LinearRegression().fit(train_x, train_y)
+    # Get test statistic
+    def _get_test_statistic(self, w):
+        a_cos = np.array([self._cos(w, a) for a in self.A])
+        b_cos = np.array([self._cos(w, b) for b in self.B])
 
-        count = 0
-        n = len(test_y)
+        return np.mean(a_cos) - np.mean(b_cos)
 
-        for i in range(n):
-            pred_y = model.predict(test_x[i].reshape((-1, 1)))
+    # Get null distribution
+    def _null_distribution(self, w, iterations):
+        AB = np.concatenate((self.A, self.B))
+        set_size = int(len(AB) / 2)
+        distribution = np.zeros(iterations)
 
-            if pred_y > test_y[i]:
-                count += 1
+        for i in range(iterations):
+            np.random.shuffle(AB)
+            A = AB[0:set_size]
+            B = AB[set_size:]
 
-        return count / n
+            a_cos = np.array([self._cos(w, a) for a in A])
+            b_cos = np.array([self._cos(w, b) for b in B])
+
+            distribution[i] = np.mean(a_cos) - np.mean(b_cos)
+
+        return distribution
+
+    # Get name of test
+    def tostr(self):
+        return 'WEFAT'
