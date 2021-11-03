@@ -24,3 +24,19 @@ Displays the effect size and the p-value.
 ## WEFAT
 Displays a graph of test statistic vs other statistic (e.g. percentage of women in an occupation) and Pearson's correlation coefficient.
  if wefat_assocation_file_name is specified. Otherwise displays effect size and p-value for each target word.
+
+ ### Resources
+ Caliskan, A., Bryson, J. J., & Narayanan, A. (2017). Semantics derived automatically from language corpora contain human-like biases. Science, 356(6334), 183–186. https://doi.org/10.1126/science.aal4230<br>
+ <br>
+ Pennington, J. (2014). GloVe: Global Vectors for Word Representation. Stanford.edu. https://nlp.stanford.edu/projects/glove/<br>
+ <br>
+ Guide to Using Pre-trained Word Embeddings in NLP. (2021, June 1). Paperspace Blog. https://blog.paperspace.com/pre-trained-word-embeddings-natural-language-processing/#using-glove-word-embeddings<br>
+ <br>
+Toney-Wails, A., & Caliskan, A. (2021). ValNorm Quantifies Semantics to Reveal Consistent Valence Biases Across Languages and Over Centuries. ArXiv:2006.03950 [Cs]. https://arxiv.org/abs/2006.03950<br>
+<br>
+Caliskan, A. (2017). Replication Data for: WEFAT and WEAT(UNF:6:C9yaa+UeGfFmtuHz734iKw==, V2). [Data set]. Harvard Dataverse. https://doi.org/10.7910/DVN/DX4VWP<br>
+<br>
+
+
+
+‌
