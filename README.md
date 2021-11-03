@@ -1,5 +1,5 @@
 # WEAT
-Implementation of WEAT (and WEFAT) as described by Caliskan, Bryson, and Narayanan in "Semantics derived automatically from language corpora contain human-like biases" (Science, 2017, DOI: 10.1126/science.aal4230).
+Implementation of WEAT (and WEFAT) (Caliskan et al., 2017).
 
 To use:
 
@@ -27,7 +27,7 @@ Displays the effect size and the p-value.
 Displays a graph of test statistic vs other statistic (e.g. percentage of women in an occupation) and Pearson's correlation coefficient.
  if wefat_assocation_file_name is specified. Otherwise displays effect size and p-value for each target word.
 
-### Resources
+## Resources
 Caliskan, A., Bryson, J. J., & Narayanan, A. (2017). Semantics derived automatically from language corpora contain human-like biases. Science, 356(6334), 183–186. https://doi.org/10.1126/science.aal4230<br>
 <br>
 Pennington, J. (2014). GloVe: Global Vectors for Word Representation. Stanford.edu. https://nlp.stanford.edu/projects/glove/<br>
