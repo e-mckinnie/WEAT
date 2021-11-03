@@ -17,8 +17,10 @@ def main(args):
     embedded_data = load_embedded_data(args.embedded_data_file_name)
 
     if args.test == 'WEAT':
+        print(f'Running WEAT on {args.data_file_name}')
         test_weat(embedded_data)
     elif args.test == 'WEFAT':
+        print(f'Running WEFAT on {args.data_file_name}')
         test_wefat(embedded_data, args.wefat_association_file_name)
     else:
         print('Test type not recognized.')
@@ -53,19 +55,14 @@ def embed_data(data, embeddings_dict, embedded_data_file_name):
         words = data[label]
         embedded_data[label] = []
         for i in words:
-            embedded_data[label].append(_get_glove_embedding(i, embeddings_dict))
+            embedded_vector = embeddings_dict.get(i)
+            if embedded_vector is None:
+                print(f'Embedding not found for "{i}"; skipped')
+            else:
+                embedded_data[label].append(embedded_vector)
 
     with open(embedded_data_file_name, 'w') as results:
         json.dump(embedded_data, results)
-
-
-# Get embedding of word from dictionary
-def _get_glove_embedding(word, embeddings_dict):
-    embedded_vector = embeddings_dict.get(word)
-    if embedded_vector is None:
-        raise Exception("Embedding not found")
-    else:
-        return embedded_vector
 
 
 # Load embeddings of target and attribute words
@@ -96,22 +93,24 @@ def test_wefat(embedded_data, wefat_association_file_name):
     test = WEFAT(embedded_data['target'], list(embedded_data['attribute_1'].values()), list(embedded_data['attribute_2'].values()))
     s = test.all_s()
 
-    with open(args.wefat_association_file_name, 'r') as file:
-        association_data = json.load(file)
+    if wefat_association_file_name is not None:
+        with open(args.wefat_association_file_name, 'r') as file:
+            association_data = json.load(file)
 
-    pairs = []
-    for association in association_data:
-        if association in s.keys():
-            pairs.append((association_data[association], s[association]))
+            pairs = []
+            for association in association_data:
+                if association in s.keys():
+                    pairs.append((association_data[association], s[association]))
 
-    plt.scatter(*zip(*pairs))
-    plt.show()
+            plt.scatter(*zip(*pairs))
+            plt.show()
 
-    correlation_coefficient = np.corrcoef(*zip(*pairs))[0][1]
-    print(f'\tPearson\'s correlation coefficient: {correlation_coefficient}')
-
-    p_value = test.p_value(pairs)
-    print(f'\tp_value: {p_value}')
+            correlation_coefficient = np.corrcoef(*zip(*pairs))[0][1]
+            print(f'\tPearson\'s correlation coefficient: {correlation_coefficient}')
+    else:
+        for target_word in s.keys():
+            print(f'\t{target_word}')
+            print(f'\t\teffect_size: {s[target_word]}')
 
 
 if __name__ == '__main__':
