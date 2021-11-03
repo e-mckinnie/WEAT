@@ -11,15 +11,15 @@ class WEFAT(WordEmbeddingTest):
         self.B = B
 
     # Return all calculated s
-    def all_s(self):
+    def all_effect_sizes(self):
         statistics = {}
         for w in self.W:
-            statistic = self.s(self.W[w])
+            statistic = self.effect_size(self.W[w])
             statistics[w] = statistic
         return statistics
 
     # Calculate s(w, A, B)
-    def s(self, w):
+    def effect_size(self, w):
         a_cos = np.array([self._cos(w, a) for a in self.A])
         b_cos = np.array([self._cos(w, b) for b in self.B])
 

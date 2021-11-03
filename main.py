@@ -91,7 +91,7 @@ def test_weat(embedded_data):
 # Run WEFAT technique and show plot, Pearson correlation coefficient, and p-value
 def test_wefat(embedded_data, wefat_association_file_name):
     test = WEFAT(embedded_data['target'], list(embedded_data['attribute_1'].values()), list(embedded_data['attribute_2'].values()))
-    s = test.all_s()
+    s = test.all_effect_sizes()
 
     if wefat_association_file_name is not None:
         with open(args.wefat_association_file_name, 'r') as file:
